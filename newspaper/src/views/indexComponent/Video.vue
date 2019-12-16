@@ -78,7 +78,7 @@ export default {
           this.$toast.clear();
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
           this.$toast.clear();
         });
     },
@@ -92,7 +92,7 @@ export default {
       let lastChild = self.$refs.lists[self.$refs.lists.length - 1];
 
       if (e.target.scrollTop + boxHeight >= lastChild.offsetTop) {
-        console.log("发起数据请求");
+        // console.log("发起数据请求");
         //发起数据请求
         this.axios({
           method: "GET",
@@ -110,7 +110,7 @@ export default {
             }
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
             this.$toast.clear();
           });
       }

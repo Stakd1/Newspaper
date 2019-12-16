@@ -169,7 +169,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     getRecommendData() {
@@ -182,7 +182,7 @@ export default {
           this.recommendData = result.data.recommend;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     getDailyData() {
@@ -194,7 +194,7 @@ export default {
           this.dailyData = result.data.daily;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     getPictureData() {
@@ -206,7 +206,7 @@ export default {
           this.pictureData = result.data.picture;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     onLoad() {
@@ -234,7 +234,7 @@ export default {
     },
 
     seach() {
-      console.log("111");
+      // console.log("111");
 
       this.$router.push({ name: "seach" });
     }
