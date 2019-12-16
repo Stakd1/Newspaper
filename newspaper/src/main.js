@@ -5,6 +5,13 @@ import store from './store'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+
+import Router from 'vue-router'
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 //导入所需组件
 import {
   Button,
@@ -17,7 +24,14 @@ import {
   Swipe,
   SwipeItem,
   Search,
-  Toast
+  Toast,
+  List,
+  Divider,
+  Cell,
+  CellGroup,
+  Grid,
+  GridItem,
+  NavBar
 } from 'vant'
 
 import 'lib-flexible/flexible'
@@ -36,6 +50,13 @@ Vue
   .use(SwipeItem)
   .use(Search)
   .use(Toast)
+  .use(List)
+  .use(Divider)
+  .use(Cell)
+  .use(CellGroup)
+  .use(Grid)
+  .use(GridItem)
+  .use(NavBar)
 Vue.config.productionTip = false
 
 new Vue({

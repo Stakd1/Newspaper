@@ -1,12 +1,12 @@
 <template>
-  <div class="register">
+  <div class="retrieve">
     <div class="right">
       <van-icon @click="jumpRout" name="arrow-left" />
     </div>
 
     <div class="phone-box">
       <div class="phone-title">
-        <span>手机号快速注册</span>
+        <span>找回密码</span>
       </div>
 
       <div class="inp">
@@ -23,7 +23,7 @@
             v-model="passWord"
             @input="validPass(passWord)"
             :type="typePass"
-            placeholder="设置6位以上字母，数字密码"
+            placeholder="重新设置6位以上字母，数字密码"
           />
           <van-icon :name="icon" @click="lookPass()" />
           <span v-show="passError.isShow">{{passError.text}}</span>
@@ -45,20 +45,18 @@
         <!-- 点击后加loading -->
         <van-button
           :loading="isLoading"
-          loading-text="注册中..."
+          loading-text="设置中..."
           @click="submitData(phoneNumber,passWord,codeReg)"
           size="large"
-        >注册</van-button>
+        >修改密码</van-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { type } from "os";
 export default {
-  name: "register",
-
+  name: "retrieve",
   data() {
     return {
       //错误
@@ -101,7 +99,6 @@ export default {
       isLoading: false
     };
   },
-
   methods: {
     //返回
     jumpRout() {
@@ -193,8 +190,7 @@ export default {
       }
       let userData = {
         userPhone: this.phoneNumber,
-        userPassword: this.passWord,
-      
+        userPassword: this.passWord
       };
       let users = localStorage.getItem("users");
       users = users ? JSON.parse(users) : [];
@@ -241,7 +237,7 @@ input {
   margin: 0.5rem 0;
   font-size: 0.5rem;
 }
-.register {
+.retrieve {
   width: 100%;
   height: 17.787rem;
   background-image: url("../assets/images/banner.jpg");

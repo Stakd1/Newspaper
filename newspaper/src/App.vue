@@ -5,6 +5,10 @@
 </template>
 
 <style lang="less">
+html,
+body {
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
@@ -19,4 +23,16 @@ body {
   clear: both;
   display: block;
 }
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.van-nav-bar__title {
+  color: #666;
+  font-weight: bold;
+  font-size: 20px;
+}
+
 </style>
