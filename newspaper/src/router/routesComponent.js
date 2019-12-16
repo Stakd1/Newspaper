@@ -13,7 +13,9 @@ class RoutesComponent {
   retrieveComponent() {
     return import('../views/Retrieve.vue')
   }
-
+  seachComponent() {
+    return import('../views/Seach.vue')
+  }
 
   myComponent() {
     return import('../views/indexComponent/My.vue')
@@ -43,6 +45,8 @@ class RoutesComponent {
   moreComponent() {
     return import('../views/followCompnent/More.vue')
   }
+
+
 }
 
 export const routesComponent = new RoutesComponent()

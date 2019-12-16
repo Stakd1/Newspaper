@@ -6,7 +6,7 @@
       </form>-->
       <van-nav-bar title="星 闻">
         <van-icon size="30" name="add-o" slot="right" />
-        <van-icon size="30" name="search" slot="left" />
+        <van-icon @click="seach" size="30" name="search" slot="left" />
       </van-nav-bar>
     </div>
 
@@ -41,66 +41,75 @@
             </div>
           </div>
         </van-tab>
-        <van-tab to title="推荐" name="b">
+        <van-tab title="推荐" name="b">
           <div class="count-box">
             <div class="count-list">
               <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-                <div class="list" v-for="(item,index) in list" :key="index" @click="getUrl(item)">
+                <div
+                  class="list"
+                  v-for="(item,index) in recommendData"
+                  :key="index"
+                  @click="getUrl(item)"
+                >
                   <div class="list-box">
                     <div class="list-title">
                       <span>{{item.title}}</span>
                     </div>
                     <div class="tip">
-                      <span>{{item.site}}</span>
+                      <span>{{item.source}}</span>
                     </div>
                   </div>
                   <div class="list-img">
-                    <img class="auto-img" :src="item.url_images" alt />
+                    <img class="auto-img" :src="item.imgsrc" alt />
                   </div>
                 </div>
               </van-list>
             </div>
           </div>
         </van-tab>
-        <van-tab to title="日报" name="c">
+        <van-tab title="日报" name="c">
           <div class="count-box">
             <div class="count-list">
               <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-                <div class="list" v-for="(item,index) in list" :key="index" @click="getUrl(item)">
+                <div
+                  class="list"
+                  v-for="(item,index) in dailyData"
+                  :key="index"
+                  @click="getUrl(item)"
+                >
                   <div class="list-box">
                     <div class="list-title">
                       <span>{{item.title}}</span>
                     </div>
                     <div class="tip">
-                      <span>{{item.site}}</span>
+                      <span>{{item.source}}</span>
                     </div>
                   </div>
                   <div class="list-img">
-                    <img class="auto-img" :src="item.url_images" alt />
+                    <img class="auto-img" :src="item.imgsrc" alt />
                   </div>
                 </div>
               </van-list>
             </div>
           </div>
         </van-tab>
-        <van-tab to title="搞笑" name="d">
+        <van-tab title="图片" name="d">
           <div class="count-box">
-            <div class="count-list">
-              <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-                <div class="list" v-for="(item,index) in list" :key="index" @click="getUrl(item)">
-                  <div class="list-box">
-                    <div class="list-title">
-                      <span>{{item.title}}</span>
-                    </div>
-                    <div class="tip">
-                      <span>{{item.site}}</span>
-                    </div>
-                  </div>
-                  <div class="list-img">
-                    <img class="auto-img" :src="item.url_images" alt />
-                  </div>
+            <div
+              class="count-list"
+              @click="getUrl(item)"
+              v-for="(item,index) in pictureData"
+              :key="index"
+            >
+              <div class="picture-box">
+                <img class="auto-img" :src="item.imgsrc" alt />
+              </div>
+              <div class="picture-title">
+                <span>{{item.title}}</span>
+                <div class="source">
+                  <span>{{item.source}}</span>
                 </div>
-              </van-list>
+              </div>
             </div>
           </div>
         </van-tab>
@@ -120,9 +129,16 @@ export default {
         require("../../assets/images/04.jpg"),
         require("../../assets/images/05.jpg")
       ],
-
+      //热门
       newsData: {},
       top: "",
+      //推荐
+      recommendData: "",
+      //日报
+      dailyData: "",
+
+      //图片
+      pictureData: "",
 
       activeName: "a",
       //加载数据
@@ -132,24 +148,67 @@ export default {
     };
   },
   created() {
-    //请求数据
-    this.axios({
-      method: "GET",
-      url: "http://192.168.53.67:8080/data/news.json"
-    })
-      .then(result => {
-        // console.log("result=>", result);
-        this.newsData = result.data;
-        this.top = result.data.top[0].abs;
-        for (let i = 0; i < this.newsData.news.length; i++) {
-          this.list.push(this.newsData.news[i]);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getNewsData();
+    this.getRecommendData();
+    this.getDailyData();
+    this.getPictureData();
   },
   methods: {
+    getNewsData() {
+      //请求数据
+      this.axios({
+        method: "GET",
+        url: "http://192.168.53.67:8080/data/news.json"
+      })
+        .then(result => {
+          // console.log("result=>", result);
+          this.newsData = result.data;
+          this.top = result.data.top[0].abs;
+          for (let i = 0; i < this.newsData.news.length; i++) {
+            this.list.push(this.newsData.news[i]);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getRecommendData() {
+      this.axios({
+        method: "GET",
+        url: "http://192.168.53.67:8080/data/recommend.json"
+      })
+        .then(result => {
+          // console.log("result=>", result.data.recommend);
+          this.recommendData = result.data.recommend;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getDailyData() {
+      this.axios({
+        method: "GET",
+        url: "http://192.168.53.67:8080/data/daily.json"
+      })
+        .then(result => {
+          this.dailyData = result.data.daily;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getPictureData() {
+      this.axios({
+        method: "GET",
+        url: "http://192.168.53.67:8080/data/picture.json"
+      })
+        .then(result => {
+          this.pictureData = result.data.picture;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     onLoad() {
       // 异步更新数据
       setTimeout(() => {
@@ -172,6 +231,12 @@ export default {
           url: item.url
         }
       });
+    },
+
+    seach() {
+      console.log("111");
+
+      this.$router.push({ name: "seach" });
     }
   }
 };
@@ -197,7 +262,6 @@ export default {
   padding: 0.4rem;
   border-bottom: 1px solid #d4d4d4;
   .list-box {
-    // overflow: hidden;
     float: left;
     margin-right: 0.5rem;
     height: 100%;
@@ -235,5 +299,20 @@ export default {
 }
 .van-nav-bar {
   background: #e3d1bb;
+}
+
+.picture-box {
+  padding: 10px;
+  height: 150px;
+}
+.picture-title {
+  padding: 10px;
+  font-size: 18px;
+  .source {
+    float: right;
+    font-size: 16px;
+    color: #666;
+    padding: 10px;
+  }
 }
 </style>

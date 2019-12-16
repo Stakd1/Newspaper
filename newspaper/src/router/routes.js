@@ -22,6 +22,13 @@ export default [{
   },
 
   {
+    //搜索
+    path: '/seach',
+    name: 'seach',
+    component: routesComponent.seachComponent
+  },
+
+  {
     path: '/index',
     name: 'index',
     component: routesComponent.indexComponent,
