@@ -27,6 +27,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("indexModule");
+
 export default {
   name: "more",
   data() {
@@ -37,22 +40,25 @@ export default {
     };
   },
   created() {
-    this.axios({
-      method: "GET",
-      url: "http://192.168.53.67:8080/data/follow.json"
-    }).then(result => {
+    // this.axios({
+    //   method: "GET",
+    //   url: "http://192.168.53.67:8080/data/follow.json"
+    // }).then(result => {
       this.$toast.loading({
         duration: 0,
         message: "加载中..."
       });
-      let data = result.data.users;
+      let data = this.follow;
       for (let i = 0; i < data.length; i++) {
         data[i]["btnColor"] = "#e4393c";
         data[i]["name"] = "关注";
       }
       this.followData.push(...data);
       this.$toast.clear();
-    });
+    // });
+  },
+   computed: {
+    ...mapState(["follow"])
   },
   updated() {
     // let status = localStorage.getItem("status");

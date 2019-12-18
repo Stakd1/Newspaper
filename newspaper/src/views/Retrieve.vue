@@ -136,7 +136,7 @@ export default {
     sendCode(num) {
       let self = this;
       //获取手机号
-      console.log(num);
+      // console.log(num);
       this.codeBtn.isActive = "active";
       let number = 60;
       this.codeBtn.isDisa = true;
@@ -164,7 +164,7 @@ export default {
       let reg = str.replace(/,/g, "");
       this.code = reg;
 
-      console.log("验证码=>", this.code);
+      // console.log("验证码=>", this.code);
     },
 
     //获取用户注册数据,验证码
@@ -217,7 +217,7 @@ export default {
         });
 
         users.push(userData);
-        console.log(users);
+        // console.log(users);
         localStorage.setItem("users", JSON.stringify(users));
         self.$router.push("login");
         self.isLoading = false;

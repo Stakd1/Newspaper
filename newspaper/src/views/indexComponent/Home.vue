@@ -119,6 +119,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("indexModule");
+
 export default {
   name: "home",
   data() {
@@ -149,65 +152,21 @@ export default {
   },
   created() {
     this.getNewsData();
-    this.getRecommendData();
-    this.getDailyData();
-    this.getPictureData();
+    this.recommendData = this.recommend;
+    this.dailyData = this.daily;
+    this.pictureData = this.picture;
+  },
+  computed: {
+    ...mapState(["newDatas", "recommend", "daily", "picture"])
   },
   methods: {
     getNewsData() {
-      //请求数据
-      this.axios({
-        method: "GET",
-        url: "http://192.168.53.67:8080/data/news.json"
-      })
-        .then(result => {
-          // console.log("result=>", result);
-          this.newsData = result.data;
-          this.top = result.data.top[0].abs;
-          for (let i = 0; i < this.newsData.news.length; i++) {
-            this.list.push(this.newsData.news[i]);
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-        });
-    },
-    getRecommendData() {
-      this.axios({
-        method: "GET",
-        url: "http://192.168.53.67:8080/data/recommend.json"
-      })
-        .then(result => {
-          // console.log("result=>", result.data.recommend);
-          this.recommendData = result.data.recommend;
-        })
-        .catch(err => {
-          // console.log(err);
-        });
-    },
-    getDailyData() {
-      this.axios({
-        method: "GET",
-        url: "http://192.168.53.67:8080/data/daily.json"
-      })
-        .then(result => {
-          this.dailyData = result.data.daily;
-        })
-        .catch(err => {
-          // console.log(err);
-        });
-    },
-    getPictureData() {
-      this.axios({
-        method: "GET",
-        url: "http://192.168.53.67:8080/data/picture.json"
-      })
-        .then(result => {
-          this.pictureData = result.data.picture;
-        })
-        .catch(err => {
-          // console.log(err);
-        });
+      this.newsData = this.newDatas;
+      // console.log(this.newsData);
+      this.top = this.newDatas.top[0].abs;
+      for (let i = 0; i < this.newsData.news.length; i++) {
+        this.list.push(this.newsData.news[i]);
+      }
     },
     onLoad() {
       // 异步更新数据
@@ -234,8 +193,6 @@ export default {
     },
 
     seach() {
-      // console.log("111");
-
       this.$router.push({ name: "seach" });
     }
   }

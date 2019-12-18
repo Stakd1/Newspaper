@@ -43,45 +43,43 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("indexModule");
 import { log } from "util";
 export default {
   name: "follow",
   data() {
     return {
       allData: [],
-      followData: [],
+      followData: '',
       likeData: [],
 
       isData: true
     };
   },
   created() {
-    this.getFollow();
+    // console.log(this.follow);
+    this.allData = this.follow;
+    let data1 = this.allData.slice(0, 3);
+    let data2 = this.allData.slice(3, 9);
+    // console.log(data1,data2);
+    
+    this.likeData=data2;
+    this.followData=data1;
 
     let fol = localStorage.getItem("status");
     fol = fol ? JSON.parse(fol) : [];
     // console.log(fol);
+    // console.log(this.followData);
     
   },
+  computed: {
+    ...mapState(["follow"])
+  },
   methods: {
-    getFollow() {
-      this.axios({
-        method: "GET",
-        url: "http://192.168.53.67:8080/data/follow.json"
-      }).then(result => {
-        this.$toast.loading({
-          duration: 0,
-          message: "加载中..."
-        });
-        this.allData.push(...result.data.users);
-        let data1 = result.data.users.slice(0, 3);
-        let data2 = result.data.users.slice(3, 9);
-        this.likeData.push(...data2);
-        this.followData.push(...data1);
-        this.$toast.clear();
-      });
-    },
     anoTher() {
+      // console.log(this.allData);
+      
       let arr = [];
       var j = 0;
       for (let i = 0; j < 6; i++) {

@@ -40,7 +40,11 @@
   </div>
 </template>
 
+
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("indexModule");
+
 export default {
   name: "videos",
 
@@ -59,6 +63,9 @@ export default {
   created() {
     this.getVideo();
   },
+  computed: {
+    ...mapState(["msgcode"])
+  },
   methods: {
     getVideo() {
       let self = this;
@@ -67,20 +74,9 @@ export default {
         duration: 0,
         message: "加载中..."
       });
-      // 请求数据
-      this.axios({
-        method: "GET",
-        url: "http://192.168.53.67:8080/data/video.json"
-      })
-        .then(result => {
-          let datas = result.data.msgcode.slice(self.start, self.count);
-          self.videoData.push(...datas);
-          this.$toast.clear();
-        })
-        .catch(err => {
-          // console.log(err);
-          this.$toast.clear();
-        });
+      let datas = this.msgcode.slice(self.start, self.count);
+      self.videoData.push(...datas);
+      this.$toast.clear();
     },
     lazy(e) {
       let self = this;
@@ -92,27 +88,13 @@ export default {
       let lastChild = self.$refs.lists[self.$refs.lists.length - 1];
 
       if (e.target.scrollTop + boxHeight >= lastChild.offsetTop) {
-        // console.log("发起数据请求");
-        //发起数据请求
-        this.axios({
-          method: "GET",
-          url: "http://192.168.53.67:8080/data/video.json"
-        })
-          .then(result => {
-            let datas = result.data.msgcode.slice(
-              self.start + 10,
-              self.count + 10
-            );
-            self.videoData.push(...datas);
-            this.$toast.clear();
-            if ((result.data.msgcode.length = self.videoData.length)) {
-              self.isHas = false;
-            }
-          })
-          .catch(err => {
-            // console.log(err);
-            this.$toast.clear();
-          });
+        let datas = this.msgcode.slice(self.start + 10, self.count + 10);
+        self.videoData.push(...datas);
+        this.$toast.clear();
+        if ((this.msgcode.length = self.videoData.length)) {
+          self.isHas = false;
+        }
+        this.$toast.clear();
       }
     },
 

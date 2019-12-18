@@ -28,6 +28,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("indexModule");
+
 export default {
   name: "look",
   data() {
@@ -42,21 +45,24 @@ export default {
     // this.title = this.$route.params.title;
 
     //请求数据
-    this.axios({
-      method: "GET",
-      url: "http://192.168.53.67:8080/data/news.json"
-    })
-      .then(result => {
+    // this.axios({
+    //   method: "GET",
+    //   url: "http://192.168.53.67:8080/data/news.json"
+    // })
+    //   .then(result => {
         // console.log("result=>", result);
-        this.newsData = result.data;
-        this.top = result.data.top[0].abs;
+        this.newsData = this.newDatas;
+        this.top = this.newDatas.top[0].abs;
         for (let i = 0; i < this.newsData.news.length; i++) {
           this.list.push(this.newsData.news[i]);
         }
-      })
-      .catch(err => {
+      // })
+      // .catch(err => {
         // console.log(err);
-      });
+      // });
+  },
+  computed: {
+    ...mapState(["newDatas"])
   },
   methods: {
     onLeft() {
@@ -84,7 +90,6 @@ export default {
   padding: 0.4rem;
   border-bottom: 1px solid #d4d4d4;
   .list-box {
-    // overflow: hidden;
     float: left;
     margin-right: 0.5rem;
     height: 100%;
