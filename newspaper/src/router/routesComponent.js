@@ -16,10 +16,28 @@ class RoutesComponent {
   seachComponent() {
     return import('../views/Seach.vue')
   }
+  addtoComponent() {
+    return import('../views/Addto.vue')
+  }
 
   myComponent() {
     return import('../views/indexComponent/My.vue')
   }
+  messageComponent() {
+    return import('../views/myComponent/Message.vue')
+  }
+  collectionComponent() {
+    return import('../views/myComponent/Collection.vue')
+  }
+  historyComponent() {
+    return import('../views/myComponent/History.vue')
+  }
+  commentComponent() {
+    return import('../views/myComponent/Comment.vue')
+  }
+
+
+
   setingComponent() {
     return import('../views/myComponent/Seting.vue')
   }

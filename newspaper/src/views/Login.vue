@@ -168,9 +168,7 @@ export default {
               userPhone: p,
               userName: "星空",
               portrait:
-                "https://img2.woyaogexing.com/2019/12/07/63ab9ee27ef44f5eb5492076a8e9b5c5!400x400.jpeg",
-              //用户关注数量
-              followArray: ""
+                "https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1225597740,615370700&fm=111&gp=0.jpg",
             };
 
             localStorage.setItem("status", JSON.stringify(status));

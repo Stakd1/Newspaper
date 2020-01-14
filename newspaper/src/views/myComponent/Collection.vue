@@ -1,9 +1,13 @@
 <template>
-  <div class="videos">
-    <van-nav-bar title="视频"></van-nav-bar>
+  <div class="collection">
+    <van-nav-bar title="收 藏" left-text="返回" left-arrow @click-left="onLeftClick" />
 
-    <div class="video-box" @scroll="lazy($event)">
-      <div class="list-box" v-for="(item, index) in videoData" :key="index" ref="lists">
+    <div class="no-coll" v-show="isShow">
+      <span>暂无收藏</span>
+    </div>
+
+    <div class="video-box">
+      <div class="list-box" v-for="(item, index) in dataArr" :key="index" ref="lists">
         <div class="img-box">
           <img @click="viedoUrl(item)" class="auto-img" :src="item.imgUrl" alt />
         </div>
@@ -32,10 +36,6 @@
           </span>
         </div>
       </div>
-
-      <div :class="last">
-        <van-divider :style="{ color: '#666', borderColor: '#666', padding: '0 16px' }">我是有底线的</van-divider>
-      </div>
     </div>
   </div>
 </template>
@@ -45,60 +45,46 @@ import { createNamespacedHelpers } from "vuex";
 const { mapState } = createNamespacedHelpers("indexModule");
 
 export default {
-  name: "videos",
+  name: "collection",
 
   data() {
     return {
-      videoData: [],
-
-      //截取数据
-      start: 0,
-      count: 10,
-
-      isHas: true,
-      last: "last",
-
-      collecArr: []
+      dataArr: [],
+      isShow: true
     };
   },
   created() {
-    this.getVideo();
+    // this.dataArr = this.$route.params.item;
+    // console.log(this.dataArr);
+
+    // console.log(this.msgcode);
+    let status = localStorage.getItem("status");
+    // status = JSON.parse(status);
+    if (status == null) {
+        this.dataArr=[];
+        return;
+    }
+    for (let i = 0; i < this.msgcode.length; i++) {
+      // console.log(this.msgcode[i].isIcon);
+      if (this.msgcode[i].isIcon == true) {
+        // console.log(this.msgcode[i])
+        this.dataArr.push(this.msgcode[i]);
+      }
+    }
+    if (this.dataArr.length === 0) {
+      this.isShow = true;
+    } else {
+      this.isShow = false;
+    }
   },
   computed: {
     ...mapState(["msgcode"])
   },
+
   methods: {
-    getVideo() {
-      let self = this;
-
-      this.$toast.loading({
-        duration: 0,
-        message: "加载中..."
-      });
-      let datas = this.msgcode.slice(self.start, self.count);
-      self.videoData.push(...datas);
-      this.$toast.clear();
+    onLeftClick() {
+      this.$router.push({ name: "my" });
     },
-    lazy(e) {
-      let self = this;
-      if (!self.isHas) {
-        this.last = "";
-        return;
-      }
-      let boxHeight = document.querySelector(".list-box").clientHeight;
-      let lastChild = self.$refs.lists[self.$refs.lists.length - 1];
-
-      if (e.target.scrollTop + boxHeight >= lastChild.offsetTop) {
-        let datas = this.msgcode.slice(self.start + 10, self.count + 10);
-        self.videoData.push(...datas);
-        this.$toast.clear();
-        if ((this.msgcode.length = self.videoData.length)) {
-          self.isHas = false;
-        }
-        this.$toast.clear();
-      }
-    },
-
     viedoUrl(item) {
       this.$router.push({
         name: "look",
@@ -109,47 +95,22 @@ export default {
         }
       });
     },
-
     getCollec(item, index) {
-       let status = localStorage.getItem("status");
-      status = JSON.parse(status);
-      if (status == null) {
-        this.$toast({
-          duration: 1000,
-          message: "请先登录再收藏视频"
-        });
-        this.$router.push("longin");
-        return;
-      }
+      // let arr = [];
+      // console.log("当前点击=>", index);
 
-      // let collecArr = localStorage.getItem("collecArr");
-      // collecArr = collecArr ? JSON.parse(collecArr) : [];
-      // console.log(index);
       item.isIcon = !item.isIcon;
       // console.log(item.isIcon);
-      
-      if (item.isIcon == true) {
-        this.collecArr.push(item);
-        // console.log("关注");
-        this.$toast({
-          duration: 1000,
-          message: "收藏成功!"
+
+      if (item.isIcon == false) {
+        let isArr = this.dataArr.filter(element => {
+          if (element.isIcon === true) {
+            return true;
+          }
         });
-
-        
-        // console.log(this.collecArr);
-        // localStorage.setItem("collecArr", JSON.stringify(collecArr));
-
-      } else {
-        
-        
-        // for (let i = 0; i < this.collecArr.length; i++) {
-        //   if (this.collecArr[i].isIcon == false) {
-        //     console.log(i);
-        //     this.collecArr.slice(i,1);
-        //   }
-        // }
-        // console.log(this.collecArr);
+        this.dataArr = isArr;
+        this.dataArr.length == 0 ? this.isShow = true :this.isShow = false 
+       
       }
     }
   }
@@ -157,8 +118,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.van-nav-bar {
-  background: #e3d1bb;
+.collection {
+  .no-coll {
+    text-align: center;
+    line-height: 300px;
+    font-size: 20px;
+    color: #d1d1d1;
+  }
 }
 .video-box {
   padding-top: 5px;
@@ -219,8 +185,5 @@ export default {
   .wrap-box {
     overflow: hidden;
   }
-}
-.last {
-  display: none;
 }
 </style>

@@ -2,6 +2,10 @@
   <div class="follow">
     <van-nav-bar title="我的关注" />
     <div class="follow-box clearfix">
+      <div class="concern" v-show="isShow">
+        <span>暂无关注</span>
+      </div>
+
       <div class="public clearfix" v-for="(item,index) in followData" :key="index">
         <div class="pic fl">
           <img class="auto-img" :src="item.img" alt />
@@ -51,27 +55,45 @@ export default {
   data() {
     return {
       allData: [],
-      followData: '',
+      followData: [],
       likeData: [],
 
-      isData: true
+      isData: true,
+
+      isShow: true
     };
   },
   created() {
     // console.log(this.follow);
+
+
+
     this.allData = this.follow;
     let data1 = this.allData.slice(0, 3);
     let data2 = this.allData.slice(3, 9);
     // console.log(data1,data2);
-    
-    this.likeData=data2;
-    this.followData=data1;
+    this.likeData = data2;
+    let status = localStorage.getItem("status");
+    // status = JSON.parse(status);
+    if (status == null) {
+        this.followData=[];
+        return;
+    }
 
-    let fol = localStorage.getItem("status");
-    fol = fol ? JSON.parse(fol) : [];
-    // console.log(fol);
-    // console.log(this.followData);
-    
+
+    for (let i = 0; i < this.allData.length; i++) {
+      if (this.allData[i].name == "取消关注") {
+        // console.log(this.allData[i]);
+        this.followData.push(this.allData[i]);
+      }
+    }
+    // console.log(this.followData.length);
+    localStorage.setItem("length", JSON.stringify(this.followData.length));
+    if (this.followData.length === 0) {
+      this.isShow = true;
+    } else {
+      this.isShow = false;
+    }
   },
   computed: {
     ...mapState(["follow"])
@@ -79,7 +101,6 @@ export default {
   methods: {
     anoTher() {
       // console.log(this.allData);
-      
       let arr = [];
       var j = 0;
       for (let i = 0; j < 6; i++) {
@@ -108,6 +129,14 @@ export default {
   height: 575px;
   overflow: hidden;
   overflow-y: auto;
+  .concern {
+    text-align: center;
+    font-size: 16px;
+    color: #ddd;
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid #ddd;
+  }
 }
 .public {
   padding: 20px 10px;

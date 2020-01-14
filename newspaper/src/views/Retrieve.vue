@@ -96,9 +96,20 @@ export default {
       code: null,
 
       //加载中状态
-      isLoading: false
+      isLoading: false,
+
+      useDataArr: []
     };
   },
+
+  created() {
+    let useData = localStorage.getItem("users");
+    useData = JSON.parse(useData);
+
+    // console.log(useData);
+    this.useDataArr = useData;
+  },
+
   methods: {
     //返回
     jumpRout() {
@@ -138,7 +149,7 @@ export default {
       //获取手机号
       // console.log(num);
       this.codeBtn.isActive = "active";
-      let number = 60;
+      let number = 5;
       this.codeBtn.isDisa = true;
       let time = setInterval(function() {
         number--;
@@ -163,12 +174,18 @@ export default {
       let str = arr.toString();
       let reg = str.replace(/,/g, "");
       this.code = reg;
-
+      this.$toast({
+        duration: 4000,
+        message: "测试验证码:" + this.code
+      });
+      //13546548548
       // console.log("验证码=>", this.code);
     },
 
     //获取用户注册数据,验证码
     submitData(p, s, c) {
+      // console.log(p);
+
       let self = this;
       //改变按钮状态
       this.isLoading = true;
@@ -194,32 +211,34 @@ export default {
       };
       let users = localStorage.getItem("users");
       users = users ? JSON.parse(users) : [];
+
       let time = setTimeout(function() {
+        let useArr = [];
+
         for (let i = 0; i < users.length; i++) {
           let index = i;
           if (users[index].userPhone === userData.userPhone) {
-            // console.log("存在");
-            self.$toast({
-              duration: 1000,
-              message: "该用户已存在"
-            });
+            users[index].userPassword = s;
+            useArr.push(users[index]);
             self.codeBtn.isActive = "";
             self.codeBtn.text = "获取验证码";
             self.codeBtn.isDisa = false;
             self.isLoading = false;
             clearTimeout(time);
-            return;
+          } else {
+            useArr.push(users[index]);
           }
         }
+
+        // console.log(useArr);
+
+        localStorage.setItem("users", JSON.stringify(useArr));
         self.$toast({
           duration: 1000,
-          message: "注册成功"
+          message: "修改密码成功"
         });
-
-        users.push(userData);
-        // console.log(users);
-        localStorage.setItem("users", JSON.stringify(users));
         self.$router.push("login");
+
         self.isLoading = false;
       }, 1000);
     }

@@ -10,7 +10,7 @@
 
       <div class="fans">
         <span>
-          <b>0</b>关注
+          <b>{{followNum}}</b>关注
         </span>
         <span>
           <b>0</b>粉丝
@@ -20,10 +20,10 @@
 
     <div class="meau">
       <van-grid>
-        <van-grid-item clickable icon="envelop-o" info="99+" text="消息" />
-        <van-grid-item clickable icon="star-o" text="收藏" />
-        <van-grid-item clickable icon="chat-o" text="评论" />
-        <van-grid-item clickable icon="underway-o" text="历史" />
+        <van-grid-item clickable icon="envelop-o" is-link to="message" info text="消息" />
+        <van-grid-item clickable icon="star-o" is-link to="collection" text="收藏" />
+        <van-grid-item clickable icon="chat-o" is-link to="comment" text="评论" />
+        <van-grid-item clickable icon="underway-o" is-link to="history" text="历史" />
       </van-grid>
 
       <van-cell-group>
@@ -42,12 +42,17 @@ export default {
   name: "my",
   data() {
     return {
+      followNum: 0,
       userData: null,
       userImg: require("../../assets/icon/up.png"),
       userName: "点击头像登录"
     };
   },
-
+  created() {
+    let length = localStorage.getItem("length");
+    // console.log(length);
+    this.followNum = length;
+  },
   mounted() {
     let data = localStorage.getItem("status");
     if (data != null) {

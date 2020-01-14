@@ -5,7 +5,7 @@
         <van-search placeholder="请输入搜索关键词" />
       </form>-->
       <van-nav-bar title="星 闻">
-        <van-icon size="30" name="add-o" slot="right" />
+        <van-icon @click="addTo" size="30" name="add-o" slot="right" />
         <van-icon @click="seach" size="30" name="search" slot="left" />
       </van-nav-bar>
     </div>
@@ -114,6 +114,7 @@
           </div>
         </van-tab>
       </van-tabs>
+     
     </div>
   </div>
 </template>
@@ -147,7 +148,9 @@ export default {
       //加载数据
       list: [],
       loading: false,
-      finished: false
+      finished: false,
+
+  
     };
   },
   created() {
@@ -184,16 +187,23 @@ export default {
     },
 
     getUrl(item) {
+      console.log(item);
+      
+
       this.$router.push({
         name: "hold",
         params: {
-          url: item.url
+          url: item.url,
+          title:item.tab
         }
       });
     },
 
     seach() {
       this.$router.push({ name: "seach" });
+    },
+    addTo() {
+      this.$router.push({ name: "addto" });
     }
   }
 };

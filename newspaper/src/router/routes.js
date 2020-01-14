@@ -29,6 +29,13 @@ export default [{
   },
 
   {
+    //添加
+    path: '/addto',
+    name: 'addto',
+    component: routesComponent.addtoComponent
+  },
+
+  {
     path: '/index',
     name: 'index',
     component: routesComponent.indexComponent,
@@ -65,6 +72,36 @@ export default [{
       name: 'home'
     }
   },
+//消息
+{
+  path: '/message',
+  name: 'message',
+  component: routesComponent.messageComponent
+},
+//收藏
+{
+  path: '/collection',
+  name: 'collection',
+  component: routesComponent.collectionComponent
+},
+//历史
+{
+  path: '/history',
+  name: 'history',
+  component: routesComponent.historyComponent
+},
+//评论
+{
+  path: '/comment',
+  name: 'comment',
+  component: routesComponent.commentComponent
+},
+
+
+
+
+
+  //设置
   {
     path: '/seting',
     name: 'seting',

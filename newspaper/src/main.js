@@ -12,6 +12,7 @@ Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
+
 //导入所需组件
 import {
   Button,
@@ -31,7 +32,7 @@ import {
   CellGroup,
   Grid,
   GridItem,
-  NavBar
+  NavBar,
 } from 'vant'
 
 import 'lib-flexible/flexible'

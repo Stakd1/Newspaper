@@ -1,7 +1,7 @@
 <template>
   <div class="hold">
     <div>
-      <van-nav-bar title="热门" left-text="返回" left-arrow @click-left="onlick" />
+      <van-nav-bar :title="title" left-text="返回" left-arrow @click-left="onlick" />
     </div>
     <iframe class="box" height="100%" width="100%" :src="url" frameborder="0" scrolling="no"></iframe>
   </div>
@@ -11,11 +11,13 @@ export default {
   name: "hold",
   data() {
     return {
-      url: ""
+      url: "",
+      title: ""
     };
   },
   created() {
     this.url = this.$route.params.url;
+    this.title = this.$route.params.title;
   },
   methods: {
     onlick() {
@@ -30,10 +32,10 @@ export default {
   height: 620px;
 }
 iframe {
-
-  body,html {
+  body,
+  html {
     width: 100%;
-    overflow: hidden ;
+    overflow: hidden;
     height: 100%;
   }
 }
