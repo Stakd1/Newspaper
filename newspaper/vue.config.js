@@ -8,7 +8,8 @@ module.exports = {
       },
     }
   }
-  const service = axios.create({
+}
+const service = axios.create({
 
   baseURL:
 
@@ -21,6 +22,4 @@ module.exports = {
   timeout: 10000
 
 })
-}
-
 
